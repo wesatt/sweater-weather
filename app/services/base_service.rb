@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BaseService
   def self.map_conn
     Faraday.new('http://www.mapquestapi.com')
