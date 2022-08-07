@@ -33,9 +33,9 @@ RSpec.describe 'api/v1/forecast api endpoints', :vcr, type: :request do
     expect(current[:sunset]).to be_a(String)
     expect(current[:temperature]).to be_a(Float)
     expect(current[:feels_like]).to be_a(Float)
-    expect(current[:humidity]).to be_a(Integer).or(Float)
-    expect(current[:uvi]).to be_a(Integer).or(Float)
-    expect(current[:visibility]).to be_a(Integer).or(Float)
+    expect(current[:humidity]).to be_a(Integer).or be_a(Float)
+    expect(current[:uvi]).to be_a(Integer).or be_a(Float)
+    expect(current[:visibility]).to be_a(Integer).or be_a(Float)
     expect(current[:conditions]).to be_a(String)
     expect(current[:icon]).to be_a(String)
 
