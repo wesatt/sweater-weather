@@ -10,11 +10,11 @@ RSpec.describe 'api/v1/users api endpoints', :vcr, type: :request do
         'ACCEPT' => 'application/json'
       }
       params = {
-        email: 'cool-guy@dude.net',
+        email: 'coolguy@dude.net',
         password: 'password',
         password_confirmation: 'password'
       }
-      post '/api/v1/users', headers: headers, params: params
+      post '/api/v1/users', headers: headers, params: JSON.generate(params)
 
       expect(response).to have_http_status(201)
 
