@@ -70,10 +70,7 @@ RSpec.describe 'api/v1/users api endpoints', :vcr, type: :request do
           password: '123',
           password_confirmation: '123'
         }
-        post '/api/v1/users', headers: headers, params: JSON.generate(params)
-
-        expect(response).to have_http_status(201)
-
+        User.create!(email: 'coolguy@dude.net', password: 'password')
         post '/api/v1/users', headers: headers, params: JSON.generate(params)
 
         expect(response).to have_http_status(400)
