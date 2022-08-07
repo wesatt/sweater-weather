@@ -1,0 +1,2 @@
+class MapQuestService < BaseService
+end
