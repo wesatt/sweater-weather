@@ -6,8 +6,8 @@ module Api
       def index
         coordinates = MapQuestFacade.get_coordinates(params[:location])
         weather = OpenWeatherFacade.get_forecast(coordinates)
-        binding.pry
-        render json: ForecastSerializer.format_forecast(weather)
+        json_hash = ForecastSerializer.format_forecast(weather)
+        render json: json_hash
       end
     end
   end

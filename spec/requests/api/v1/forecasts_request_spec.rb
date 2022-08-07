@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'api/v1/forecast api endpoints', :vcr, type: :request do
-  it 'returns the forecast for ' do
+  it 'returns the forecast for a given location' do
     headers = {
       'CONTENT_TYPE' => 'application/json',
       'ACCEPT' => 'application/json'
@@ -11,7 +11,6 @@ RSpec.describe 'api/v1/forecast api endpoints', :vcr, type: :request do
     get '/api/v1/forecast?location=denver,co', headers: headers
 
     expect(response).to be_successful
-    binding.pry
     response_body = JSON.parse(response.body, symbolize_names: true)
     expect(response_body.keys).to include(:data)
 
