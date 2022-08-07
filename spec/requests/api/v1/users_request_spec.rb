@@ -71,6 +71,9 @@ RSpec.describe 'api/v1/users api endpoints', :vcr, type: :request do
           password_confirmation: '123'
         }
         post '/api/v1/users', headers: headers, params: JSON.generate(params)
+
+        expect(response).to have_http_status(201)
+
         post '/api/v1/users', headers: headers, params: JSON.generate(params)
 
         expect(response).to have_http_status(400)
