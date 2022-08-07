@@ -8,4 +8,21 @@ RSpec.describe MapQuestService, :vcr do
       expect(MapQuestService.map_conn).to be_a(Faraday::Connection)
     end
   end
+
+  describe '.get_coordinates(location)' do
+    it 'returns a json with coordinates for the given address' do
+      response = MapQuestService.get_coordinates('denver,co')
+
+      expect(response.keys).to include(:results)
+      results = response[:results]
+      expect(results).to be_a(Array)
+      expect(results.first.keys).to include(:locations)
+      locations = results.first[:locations]
+      expect(locations.first.keys).to include(:latLng)
+      coordinates = locations.first[:latLng]
+      expect(coordinates.keys).to include(:lat, :lng)
+      expect(coordinates[:lat]).to be_a(Float)
+      expect(coordinates[:lng]).to be_a(Float)
+    end
+  end
 end

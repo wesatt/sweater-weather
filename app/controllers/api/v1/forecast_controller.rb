@@ -4,9 +4,9 @@ module Api
   module V1
     class ForecastController < ApplicationController
       def index
-        coordinates = MapQuestFacade.get_coordinates(params[:location])
-        weather = OpenWeatherFacade.get_forecast(coordinates)
-        json_hash = ForecastSerializer.format_forecast(weather)
+        location = MapQuestFacade.get_coordinates(params[:location])
+        forecast = OpenWeatherFacade.get_forecast(location.lat, location.lng)
+        json_hash = ForecastSerializer.format_forecast(forecast)
         render json: json_hash
       end
     end

@@ -2,27 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'api/v1/forecast api endpoints', :vcr, type: :request do
-  it 'returns the forecast for a given location' do
-    headers = {
-      'CONTENT_TYPE' => 'application/json',
-      'ACCEPT' => 'application/json'
-    }
-    get '/api/v1/forecast?location=denver,co', headers: headers
+RSpec.describe Forecast do
+  it 'exists and has attributes' do
+    forecast = Forecast.new(forecast_response)
 
-    expect(response).to be_successful
-    response_body = JSON.parse(response.body, symbolize_names: true)
-    expect(response_body.keys).to include(:data)
+    expect(forecast).to be_a(Forecast)
 
-    data = response_body[:data]
-    expect(data.keys).to include(:id, :type, :attributes)
-    expect(data.keys.count).to eq(3) # checks that only the keys above are present
-    expect(data[:id]).to eq(nil)
-    expect(data[:type]).to eq('forecast')
-    expect(data[:attributes].keys).to include(:current_weather, :daily_weather, :hourly_weather)
-    expect(data[:attributes].keys.count).to eq(3) # checks that only the keys above are present
-
-    current = data[:attributes][:current_weather]
+    current = forecast.current_formatted
+    expect(current).to be_a(Hash)
     expect(current.keys).to include(
       :datetime, :sunrise, :sunset, :temperature, :feels_like,
       :humidity, :uvi, :visibility, :conditions, :icon
@@ -39,7 +26,7 @@ RSpec.describe 'api/v1/forecast api endpoints', :vcr, type: :request do
     expect(current[:conditions]).to be_a(String)
     expect(current[:icon]).to be_a(String)
 
-    daily = data[:attributes][:daily_weather]
+    daily = forecast.daily_formatted(5)
     expect(daily).to be_a(Array)
     expect(daily.count).to eq(5)
     daily.each do |day|
@@ -56,7 +43,7 @@ RSpec.describe 'api/v1/forecast api endpoints', :vcr, type: :request do
       expect(day[:icon]).to be_a(String)
     end
 
-    hourly = data[:attributes][:hourly_weather]
+    hourly = forecast.hourly_formatted(8)
     expect(hourly).to be_a(Array)
     expect(hourly.count).to eq(8)
     hourly.each do |hour|
