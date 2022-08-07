@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'api/v1/forecast api endpoints', :vcr, type: :request do
-  xit 'returns the forecast for ' do
+  it 'returns the forecast for ' do
     headers = {
       'CONTENT_TYPE' => 'application/json',
       'ACCEPT' => 'application/json'
