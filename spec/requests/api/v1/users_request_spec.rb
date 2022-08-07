@@ -59,6 +59,107 @@ RSpec.describe 'api/v1/users api endpoints', :vcr, type: :request do
         expect(data[:type]).to eq('error')
         expect(data[:message]).to eq("Password confirmation doesn't match Password")
       end
+
+      it 'email is already taken' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          email: 'coolguy@dude.net',
+          password: '123',
+          password_confirmation: '123'
+        }
+        post '/api/v1/users', headers: headers, params: JSON.generate(params)
+        post '/api/v1/users', headers: headers, params: JSON.generate(params)
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq('Email has already been taken')
+      end
+
+      it 'email is missing' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          email: '',
+          password: '123',
+          password_confirmation: '123'
+        }
+        post '/api/v1/users', headers: headers, params: JSON.generate(params)
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq("Email can't be blank")
+      end
+
+      it 'password is missing' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          email: 'coolguy@dude.net',
+          password: '',
+          password_confirmation: '123'
+        }
+        post '/api/v1/users', headers: headers, params: JSON.generate(params)
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq("Password can't be blank")
+      end
+
+      it 'password confirmation is missing' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          email: 'coolguy@dude.net',
+          password: '123',
+          password_confirmation: ''
+        }
+        post '/api/v1/users', headers: headers, params: JSON.generate(params)
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq("Password confirmation doesn't match Password")
+      end
     end
   end
 end
