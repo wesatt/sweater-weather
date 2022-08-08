@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Munchie
   attr_reader :name,
               :address
