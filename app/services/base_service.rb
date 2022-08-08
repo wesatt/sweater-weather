@@ -12,4 +12,10 @@ class BaseService
       req.params['appid'] = ENV['open_weather_api_key']
     end
   end
+
+  def self.yelp_conn
+    Faraday.new('https://api.yelp.com') do |req|
+      req.headers['Authorization'] = ENV['yelp_api_key']
+    end
+  end
 end
