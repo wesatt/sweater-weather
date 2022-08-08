@@ -10,9 +10,8 @@ module Api
           response_hash = UserSerializer.format_user(user, api_key)
           render json: response_hash, status: :created
         else
-          error_messages = user.errors.messages
-          response_hash = ErrorSerializer.format_error(error_messages)
-          render json: response_hash, status: :bad_request
+          error_message = user.errors.messages
+          error_handler(error_message, :bad_request)
         end
       end
 

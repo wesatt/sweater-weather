@@ -13,9 +13,8 @@ module Api
           json_hash = MunchieSerializer.format_munchie(location, forecast.current_formatted, restaurants.first)
           render json: json_hash
         else
-          error_messages = { required_parameter: ['is missing'] }
-          response_hash = ErrorSerializer.format_error(error_messages)
-          render json: response_hash, status: :bad_request
+          error_message = { required_parameter: ['is missing'] }
+          error_handler(error_message, :bad_request)
         end
       end
     end
