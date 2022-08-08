@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MunchieSerializer
-  def self.format_forecast(destination, forecast, restaurant)
+  def self.format_munchie(destination, forecast, restaurant)
     {
       data: {
         id: nil,
@@ -9,12 +9,12 @@ class MunchieSerializer
         attributes: {
           destination_city: destination,
           forecast: {
-            summary: '',
-            temperature: ''
+            summary: forecast[:conditions],
+            temperature: forecast[:temperature].to_f
           },
           restaurant: {
-            name: '',
-            address: ''
+            name: restaurant.name,
+            address: restaurant.address
           }
         }
       }
