@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Route
-  attr_reader :distance
-
   def initialize(data)
     @data = data
   end

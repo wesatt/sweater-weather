@@ -25,4 +25,15 @@ RSpec.describe MapQuestService, :vcr do
       expect(coordinates[:lng]).to be_a(Float)
     end
   end
+
+  describe '.get_directions(from, to)' do
+    it 'returns a json with directions for the locations provided' do
+      response = MapQuestService.get_directions('denver,co', 'pueblo,co')
+
+      expect(response.keys).to include(:route)
+      route = response[:route]
+      expect(route.keys).to include(:time)
+      expect(route[:time]).to be_a(Integer)
+    end
+  end
 end
