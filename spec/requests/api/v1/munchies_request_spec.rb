@@ -45,5 +45,115 @@ RSpec.describe 'api/v1/munchies api endpoints', :vcr, type: :request do
       expect(restaurant[:name]).to be_a(String)
       expect(restaurant[:address]).to be_a(String)
     end
+
+    describe 'SAD PATHS' do
+      it 'will return an error if the location is missing' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          api_key: '35f291ad58d0ac2c5a6275cbe56eb4d3'
+        }
+        user = User.create!(email: 'yogi@picnics.gov', password: 'noturaveragebear')
+        user.api_keys.create!(token: '35f291ad58d0ac2c5a6275cbe56eb4d3')
+
+        get '/api/v1/munchies?food=chinese', headers: headers, params: params
+
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq('Required parameter is missing')
+      end
+
+      it 'will return an error if the location is blank' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          api_key: '35f291ad58d0ac2c5a6275cbe56eb4d3'
+        }
+        user = User.create!(email: 'yogi@picnics.gov', password: 'noturaveragebear')
+        user.api_keys.create!(token: '35f291ad58d0ac2c5a6275cbe56eb4d3')
+
+        get '/api/v1/munchies?location=&food=chinese', headers: headers, params: params
+
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq('Required parameter is missing')
+      end
+
+      it 'will return an error if the food is missing' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          api_key: '35f291ad58d0ac2c5a6275cbe56eb4d3'
+        }
+        user = User.create!(email: 'yogi@picnics.gov', password: 'noturaveragebear')
+        user.api_keys.create!(token: '35f291ad58d0ac2c5a6275cbe56eb4d3')
+
+        get '/api/v1/munchies?location=denver,co', headers: headers, params: params
+
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq('Required parameter is missing')
+      end
+
+      it 'will return an error if the food is blank' do
+        headers = {
+          'CONTENT_TYPE' => 'application/json',
+          'ACCEPT' => 'application/json'
+        }
+        params = {
+          api_key: '35f291ad58d0ac2c5a6275cbe56eb4d3'
+        }
+        user = User.create!(email: 'yogi@picnics.gov', password: 'noturaveragebear')
+        user.api_keys.create!(token: '35f291ad58d0ac2c5a6275cbe56eb4d3')
+
+        get '/api/v1/munchies?location=denver,co&food=', headers: headers, params: params
+
+
+        expect(response).to have_http_status(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body.keys).to include(:data)
+
+        data = body[:data]
+        expect(data.keys).to include(:id, :type, :message)
+        expect(data.keys.count).to eq(3)
+        expect(data[:id]).to eq(nil)
+        expect(data[:type]).to eq('error')
+        expect(data[:message]).to eq('Required parameter is missing')
+      end
+    end
   end
 end
