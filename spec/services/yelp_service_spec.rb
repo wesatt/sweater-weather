@@ -13,18 +13,19 @@ RSpec.describe YelpService, :vcr do
     it 'returns a json with a list of restaurants in a given location that matches the food type' do
       response = YelpService.get_restaurants('denver,co', 'chinese')
 
-      binding.pry
-      # expect these to fail for now, until I get a working response
-      expect(response.keys).to include(:busiinesses)
-      results = response[:results]
-      expect(results).to be_a(Array)
-      expect(results.first.keys).to include(:locations)
-      locations = results.first[:locations]
-      expect(locations.first.keys).to include(:latLng)
-      coordinates = locations.first[:latLng]
-      expect(coordinates.keys).to include(:lat, :lng)
-      expect(coordinates[:lat]).to be_a(Float)
-      expect(coordinates[:lng]).to be_a(Float)
+      expect(response.keys).to include(:businesses, :total, :region)
+      expect(response.keys.count).to eq(3)
+
+      businesses = response[:businesses]
+      expect(businesses).to be_a(Array)
+
+      business = businesses.first
+      expect(business.keys).to include(:name, :location)
+      expect(business[:name]).to be_a(String)
+      expect(business[:location][:display_address]).to be_a(Array)
+
+      full_address = business[:location][:display_address].join(', ')
+      expect(full_address).to be_a(String)
     end
   end
 end
