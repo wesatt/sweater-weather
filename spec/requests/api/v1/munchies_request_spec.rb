@@ -151,7 +151,7 @@ RSpec.describe 'api/v1/munchies api endpoints', :vcr, type: :request do
         expect(data[:message]).to eq('Required parameter is missing')
       end
 
-      xit 'will return an error if the location does not exist' do
+      xit 'edge case: will return an error if the location does not exist' do
         headers = {
           'CONTENT_TYPE' => 'application/json',
           'ACCEPT' => 'application/json'
@@ -178,7 +178,7 @@ RSpec.describe 'api/v1/munchies api endpoints', :vcr, type: :request do
         expect(data[:message]).to eq('Required parameter is missing')
       end
 
-      xit 'will return an error if the food type does not exist' do
+      xit 'edgecase: will return an error if the food type does not exist' do
         headers = {
           'CONTENT_TYPE' => 'application/json',
           'ACCEPT' => 'application/json'
