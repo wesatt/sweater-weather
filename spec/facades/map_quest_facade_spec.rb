@@ -6,10 +6,12 @@ RSpec.describe MapQuestFacade, :vcr do
   describe '.get_coordinates(location)' do
     it 'returns a Location PORO for the given address' do
       location = MapQuestFacade.get_coordinates('denver,co')
+      # lat = 39.738453
+      # lng = -104.984853
 
       expect(location).to be_a(Location)
-      expect(location.lat).to eq(39.738453)
-      expect(location.lng).to eq(-104.984853)
+      expect(location.lat).to eq(39.74)
+      expect(location.lng).to eq(-104.98)
     end
   end
 
