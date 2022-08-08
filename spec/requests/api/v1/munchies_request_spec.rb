@@ -15,7 +15,7 @@ RSpec.describe 'api/v1/munchies api endpoints', :vcr, type: :request do
       user = User.create!(email: 'yogi@picnics.gov', password: 'noturaveragebear')
       user.api_keys.create!(token: '35f291ad58d0ac2c5a6275cbe56eb4d3')
 
-      get '/api/v1/munchies?location=denver,co&food=chinese', headers: headers, params: JSON.generate(params)
+      get '/api/v1/munchies?location=denver,co&food=chinese', headers: headers, params: params
 
       expect(response).to have_http_status(200)
 
