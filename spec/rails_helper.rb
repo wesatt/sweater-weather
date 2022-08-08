@@ -87,4 +87,5 @@ VCR.configure do |config|
   config.filter_sensitive_data('<api_key>') { ENV['open_weather_api_key'] }
   config.filter_sensitive_data('<api_key>') { ENV['yelp_api_key'] }
   config.configure_rspec_metadata!
+  config.ignore_hosts 'api.openweathermap.org'
 end

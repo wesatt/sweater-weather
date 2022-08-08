@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-# RSpec.describe OpenWeatherService, vcr: {record: :new_episodes} do
 RSpec.describe OpenWeatherService, :vcr do
   describe 'OpenWeather connection' do
     it 'establishes a connection to the OpenWeather API' do
@@ -15,6 +14,8 @@ RSpec.describe OpenWeatherService, :vcr do
       lat = 39.74
       lng = -104.98
       response = OpenWeatherService.get_forecast(lat, lng)
+
+      binding.pry
 
       expect(response.keys).to include(:current, :daily, :hourly)
     end

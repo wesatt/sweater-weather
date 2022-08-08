@@ -16,7 +16,7 @@ module Api
           )
           render json: json_hash
         else
-          render json: auth_and_verify[:response], status: auth_and_verify[:status]
+          error_handler(auth_and_verify[:message], auth_and_verify[:status])
         end
       end
 
@@ -30,13 +30,11 @@ module Api
         origin = params[:origin]
         destination = params[:destination]
         if !api_key
-          error_messages = { api_key: ['is invalid'] }
-          response_hash = ErrorSerializer.format_error(error_messages)
-          { response: response_hash, status: :unauthorized }
+          error_message = { api_key: ['is invalid'] }
+          { message: error_message, status: :unauthorized }
         elsif origin.blank? || destination.blank?
-          error_messages = { required_information: ['is missing'] }
-          response_hash = ErrorSerializer.format_error(error_messages)
-          { response: response_hash, status: :bad_request }
+          error_message = { required_information: ['is missing'] }
+          { message: error_message, status: :bad_request }
         end
       end
     end
