@@ -80,7 +80,11 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-VCR.configure do |c|
-  c.filter_sensitive_data('<api_key>') { ENV['map_quest_api_key'] }
-  c.filter_sensitive_data('<api_key>') { ENV['open_weather_api_key'] }
+VCR.configure do |config|
+  config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
+  config.hook_into :webmock
+  config.filter_sensitive_data('<api_key>') { ENV['map_quest_api_key'] }
+  config.filter_sensitive_data('<api_key>') { ENV['open_weather_api_key'] }
+  config.filter_sensitive_data('<api_key>') { ENV['yelp_api_key'] }
+  config.configure_rspec_metadata!
 end
