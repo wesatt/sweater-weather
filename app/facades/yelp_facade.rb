@@ -2,7 +2,9 @@
 
 class YelpFacade
   def self.get_restaurants(location, food_type)
-    response = yelp_conn.get("/v3/businesses/search?term=restaurants&location=#{location}&categories=#{food_type}")
-    JSON.parse(response.body, symbolize_names: true)
+    json_hash = YelpService.get_restaurants(location, food_type)
+    json_hash[:businesses].map do |business|
+      Munchie.new(business)
+    end
   end
 end
