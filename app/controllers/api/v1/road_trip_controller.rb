@@ -5,22 +5,12 @@ module Api
     class RoadTripController < ApplicationController
       def create
         if !auth_and_verify
-          origin = params[:origin]
-          destination = params[:destination]
           route = MapQuestFacade.get_directions(origin, destination)
           if route.travel_time == 'impossible route'
             json_hash = RoadTripSerializer.format_impossible_route(origin, destination)
-            # render json: json_hash
           else
-            # binding.pry
-            # location = MapQuestFacade.get_coordinates(params[:destination])
             arrival_forecast = OpenWeatherFacade.get_forecast(route.destination_lat, route.destination_lng)
-            json_hash = RoadTripSerializer.format_roadtrip(
-              origin,
-              destination,
-              route,
-              arrival_forecast
-            )
+            json_hash = RoadTripSerializer.format_roadtrip(origin, destination, route, arrival_forecast)
           end
           render json: json_hash
         else
@@ -31,12 +21,18 @@ module Api
       private
 
       def api_key
-        api_key ||= ApiKey.find_by(token: params[:api_key])
+        @api_key ||= ApiKey.find_by(token: params[:api_key])
+      end
+
+      def origin
+        @origin ||= params[:origin]
+      end
+
+      def destination
+        @destination ||= params[:destination]
       end
 
       def auth_and_verify
-        origin = params[:origin]
-        destination = params[:destination]
         if !api_key
           error_message = { api_key: ['is invalid'] }
           { message: error_message, status: :unauthorized }
