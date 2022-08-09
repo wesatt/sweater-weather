@@ -5,38 +5,40 @@ module Api
     class RoadTripController < ApplicationController
       def create
         if !auth_and_verify
-          directions = MapQuestFacade.get_directions(params[:origin], params[:destination])
-          location = MapQuestFacade.get_coordinates(params[:destination])
-          arrival_forecast = OpenWeatherFacade.get_forecast(location.lat, location.lng)
-          json_hash = RoadTripSerializer.format_roadtrip(
-            params[:origin],
-            params[:destination],
-            directions,
-            arrival_forecast
-          )
+          route = MapQuestFacade.get_directions(origin, destination)
+          if route.travel_time == 'impossible route'
+            json_hash = RoadTripSerializer.format_impossible_route(origin, destination)
+          else
+            arrival_forecast = OpenWeatherFacade.get_forecast(route.destination_lat, route.destination_lng)
+            json_hash = RoadTripSerializer.format_roadtrip(origin, destination, route, arrival_forecast)
+          end
           render json: json_hash
         else
-          render json: auth_and_verify[:response], status: auth_and_verify[:status]
+          error_handler(auth_and_verify[:message], auth_and_verify[:status])
         end
       end
 
       private
 
       def api_key
-        api_key ||= ApiKey.find_by(token: params[:api_key])
+        @api_key ||= ApiKey.find_by(token: params[:api_key])
+      end
+
+      def origin
+        @origin ||= params[:origin]
+      end
+
+      def destination
+        @destination ||= params[:destination]
       end
 
       def auth_and_verify
-        origin = params[:origin]
-        destination = params[:destination]
         if !api_key
-          error_messages = { api_key: ['is invalid'] }
-          response_hash = ErrorSerializer.format_error(error_messages)
-          { response: response_hash, status: :unauthorized }
+          error_message = { api_key: ['is invalid'] }
+          { message: error_message, status: :unauthorized }
         elsif origin.blank? || destination.blank?
-          error_messages = { required_information: ['is missing'] }
-          response_hash = ErrorSerializer.format_error(error_messages)
-          { response: response_hash, status: :bad_request }
+          error_message = { required_information: ['is missing'] }
+          { message: error_message, status: :bad_request }
         end
       end
     end

@@ -5,7 +5,7 @@ class Location
               :lng
 
   def initialize(data)
-    @lat = data[:lat]
-    @lng = data[:lng]
+    @lat = data[:lat].round(2)
+    @lng = data[:lng].round(2)
   end
 end

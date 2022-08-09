@@ -10,9 +10,8 @@ module Api
           response_hash = UserSerializer.format_user(user, api_key)
           render json: response_hash
         else
-          error_messages = { provided_credentials: ['are invalid'] }
-          response_hash = ErrorSerializer.format_error(error_messages)
-          render json: response_hash, status: :unauthorized
+          error_message = { provided_credentials: ['are invalid'] }
+          error_handler(error_message, :unauthorized)
         end
       end
     end

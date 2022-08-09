@@ -7,7 +7,7 @@ class Route
 
   def time_hash
     seconds = @data[:time]
-    mm, ss = seconds.divmod(60)
+    mm, _ss = seconds.divmod(60)
     hh, mm = mm.divmod(60)
     dd, hh = hh.divmod(24)
     { days: dd, hours: hh, minutes: mm }
@@ -24,5 +24,13 @@ class Route
     else
       'impossible route'
     end
+  end
+
+  def destination_lat
+    @data[:locations].last[:latLng][:lat]
+  end
+
+  def destination_lng
+    @data[:locations].last[:latLng][:lng]
   end
 end

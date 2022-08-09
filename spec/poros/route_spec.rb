@@ -4,10 +4,12 @@ require 'rails_helper'
 
 RSpec.describe Route do
   it 'exists and has attributes' do
-    data = { time: 123_456 }
+    data = { time: 123_456, locations: [{ latLng: { lat: 33.33, lng: 44.44 } }] }
     route = Route.new(data)
 
     expect(route).to be_a(Route)
+    expect(route.destination_lat).to eq(33.33)
+    expect(route.destination_lng).to eq(44.44)
     expect(route.travel_time).to eq('days: 1, hours: 10, minutes: 17')
     time_hash = route.time_hash
     expect(time_hash.keys).to include(:days, :hours, :minutes)

@@ -8,7 +8,7 @@ RSpec.describe Location do
     location = Location.new(data)
 
     expect(location).to be_a(Location)
-    expect(location.lat).to eq(39.738453)
-    expect(location.lng).to eq(-104.984853)
+    expect(location.lat).to eq(39.74)
+    expect(location.lng).to eq(-104.98)
   end
 end
