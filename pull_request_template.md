@@ -13,7 +13,7 @@
 ### Required:
 -[] I have self-reviewed my code
 -[] I have fully tested my code
--[] All Tests are Passing (Coverage is currently at: __ )
+-[] All Tests are Passing (Coverage is currently at: __% )
 -[] The code will run locally
--[] My code has no unused/commented out code (If not, please provide description: __ )
--[] I have commented my code, particularly in hard-to-understand areas
+-[] My code has no unused/commented out code (If applicable. If there is commented out code, please provide description: __ )
+-[] I have commented my code, particularly in hard-to-understand areas (if applicable)
