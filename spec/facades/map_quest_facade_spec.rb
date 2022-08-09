@@ -22,6 +22,10 @@ RSpec.describe MapQuestFacade, :vcr do
       expect(route).to be_a(Route)
       expect(route.time_hash).to be_a(Hash)
       expect(route.travel_time).to be_a(String)
+      expect(route.destination_lat).to be_a(Float)
+      expect(route.destination_lat).to eq(38.265425)
+      expect(route.destination_lng).to be_a(Float)
+      expect(route.destination_lng).to eq(-104.610415)
 
       impossible_route = MapQuestFacade.get_directions('denver,co', 'london,uk')
 
