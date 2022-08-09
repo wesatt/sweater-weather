@@ -28,12 +28,22 @@ RSpec.describe MapQuestService, :vcr do
 
   describe '.get_directions(from, to)' do
     it 'returns a json with directions for the locations provided' do
-      response = MapQuestService.get_directions('denver,co', 'pueblo,co')
+      response = MapQuestService.get_directions('pueblo,co', 'denver,co')
 
       expect(response.keys).to include(:route)
       route = response[:route]
-      expect(route.keys).to include(:time)
+      expect(route.keys).to include(:time, :locations)
       expect(route[:time]).to be_a(Integer)
+      locations = route[:locations]
+      expect(locations).to be_a(Array)
+      destination = locations.last
+      expect(destination.keys).to include(:displayLatLng, :latLng, :adminArea5, :adminArea3)
+      expect(destination[:adminArea5]).to be_a(String) # city
+      expect(destination[:adminArea3]).to be_a(String) # state
+      display_lat_lng = destination[:displayLatLng]
+      expect(display_lat_lng.keys).to include(:lng, :lat)
+      lat_lng = destination[:latLng]
+      expect(lat_lng.keys).to include(:lng, :lat)
     end
   end
 end
